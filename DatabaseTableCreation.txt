@@ -1,0 +1,51 @@
+drop table if exists persons;
+drop table if exists events;
+drop table if exists users;
+drop table if exists authenticationTokens;
+
+create table persons 
+(
+	personID varchar(255) not null primary key,
+	associatedUsername varchar(255) not null,
+	firstName varchar(255) not null,
+	lastName varchar(255) not null,
+	gender char(1) not null,
+	fatherID varChar(255), 
+	motherID varChar(255), 
+	spouseID varChar(255), 
+	FOREIGN KEY(associatedUsername) REFERENCES users(userName)
+);
+
+create table events 
+(
+	eventID varChar(255) not null PRIMARY KEY,
+	associatedUsername varChar(255) not null,
+	personID varChar(255) not null, 
+	latitude FLOAT not null,
+	longitude FLOAT not null,
+	country varChar(255) not null,
+	city varChar(255) not null,
+	eventType varChar(255) not null,
+	year INTEGER not null,
+	FOREIGN KEY(personID) REFERENCES persons(personID),
+	FOREIGN KEY(associatedUsername) REFERENCES users(userName)
+);
+
+create table users 
+(
+	userName varChar(255) not null PRIMARY KEY,
+	password varChar(255) not null,
+	email varChar(255) not null,
+	firstName varChar(255) not null,
+	lastName varChar(255) not null,
+	gender char(1) not null,
+	personID varChar(255) not null,
+	FOREIGN KEY(personID) REFERENCES persons(personID) 
+);
+
+create table authenticationTokens 
+(
+	authenticationToken varChar(255) not null PRIMARY KEY,
+	userId varChar(255) not null, 
+	FOREIGN KEY(userId) REFERENCES users(userName) 
+);
